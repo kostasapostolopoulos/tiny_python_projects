@@ -56,8 +56,12 @@ def stemmer(word):
     consonants = "".join(
         [c for c in string.ascii_lowercase if c not in "aeiou"]
     )
-    pattern = f"([{consonants}]+)?([aeiou])(.*)"
+    pattern = (f"([{consonants}]+)?" # capture one or more, optional
+               f"([aeiou])" # capture at least one vowel
+               f"(.*)") # capture zero or more of anything
+    
     match = re.match(pattern, word.lower())
+
     if match:
         p1 = match.group(1) or ""
         p2 = match.group(2) or ""

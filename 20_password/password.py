@@ -10,6 +10,7 @@ import random
 import re
 import string
 
+
 def get_args():
     """Get command-line arguments"""
 
@@ -75,6 +76,7 @@ def main():
 
     def word_length(word):
         return args.min_word_len <= len(word) <= args.max_word_len
+
     for fh in args.file:
         for line in fh:
             for word in filter(word_length, map(clean, line.lower().split())):
@@ -82,23 +84,30 @@ def main():
 
     words = sorted(words)
     passwords = [
-            ''.join(random.sample(words, k=args.num_words)) for _ in range(args.num)
-            ]
+        ''.join(random.sample(words, k=args.num_words))
+        for _ in range(args.num)
+    ]
 
     if args.l33t:
         passwords = map(l33t, passwords)
 
     print('\n'.join(passwords))
 
+
 def clean(a_word):
     """Cleans a word from punctuation"""
 
     return re.sub(r'[^A-Za-z]', '', a_word)
 
+
 def ransom(word):
     """Randomly choose an upper or lowercase letter to return."""
-    
-    return ''.join([char.upper() if random.choice([False, True]) else char.lower() for char in word]) 
+
+    return ''.join([
+        char.upper() if random.choice([False, True]) else char.lower()
+        for char in word
+    ])
+
 
 def l33t(word):
     """Obfuscates the password"""
@@ -115,7 +124,9 @@ def l33t(word):
         'S': '5',
     }
 
-    return (''.join([jumper.get(char, char) for char in word]) + random.choice(string.punctuation))
+    return (''.join([jumper.get(char, char)
+                     for char in word]) + random.choice(string.punctuation))
+
 
 if __name__ == '__main__':
     main()
